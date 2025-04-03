@@ -47,23 +47,8 @@ def save_to_csv(data, filename):
             writer.writerows(entry)
 
 if __name__ == '__main__':
-    category_titles = ['Category:Russian class 1 verbs',
-                       'Category:Russian class 2 verbs',
-                       'Category:Russian class 3 verbs',
-                       'Category:Russian class 4 verbs',
-                       'Category:Russian class 5 verbs',
-                       'Category:Russian class 6 verbs',
-                       'Category:Russian class 8 verbs',
-                       'Category:Russian class 9 verbs',
-                       'Category:Russian class 10 verbs',
-                       'Category:Russian class 11 verbs',
-                       'Category:Russian class 12 verbs',
-                       'Category:Russian class 13 verbs',
-                       'Category:Russian class 14 verbs',
-                       'Category:Russian class 15 verbs',
-                       'Category:Russian class 16 verbs',
-                       'Category:Russian irregular verbs'
-                       ]
+    category_titles = [f'Category: Russian class {i} verbs' for i in range(1,17)] + ['Category: Russian irregular verbs']
+
     for cat in category_titles:
         cat_members = get_category_members(cat)
         save_to_csv(cat_members, f'{cat.split(":")[-1]}_members.csv')

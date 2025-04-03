@@ -4,6 +4,12 @@ import requests
 from bs4 import BeautifulSoup
 import time
 
+'''
+This script is only used with the Anki_code folder, 
+if you want to produce an Anki deck.
+The TF-IDF analysis can be done with the rest of the scripts.
+'''
+
 def read_sorted_verbs(file_path):
     '''
     Reads sorted verbs. Takes in a csv file with
@@ -127,7 +133,9 @@ def sanitize(word):
     '''
     This functions sanitizes any issues with how the html encodes
     the targeted words. It also handles ambiguous cases that break
-    the code, e.g. english characters disguised as cyrillic
+    the code, e.g. english characters disguised as cyrillic.
+    This is important, due to inconsistencies with how articles
+    are written on Wiktionary.
     '''
     # Preserve diacritic marks for vowels and exclude Ё ё from removal
     preserved_chars = {'́', '̀', '̂', '̌', '̆', '̑', '̄', 
@@ -147,9 +155,12 @@ def sanitize(word):
         for vowel, accented_vowel in vowel_mapping.items():
             normalized_word = normalized_word.replace(vowel, accented_vowel)
 
+    
     caret_stat = any('̆' in char for char in normalized_word)
     if caret_stat:
-        #print(f'problem word {caret_stat}')
+        # Actually different characters, й vs и with a carat
+        # Rare problem but annoying enough to address
+        #print(f'problem word {caret_stat}') # Debug problem words
         normalized_word = normalized_word.replace('й', 'й')
             
     
@@ -167,17 +178,13 @@ if __name__ == '__main__':
     - saves dictionary for anki card generator
     '''
 
-    '''sorted_classes = ['class 1','class 2','class 3',
+    # Listed out for quick manipulation
+    sorted_classes = ['class 1','class 2','class 3',
              'class 4','class 5','class 6',
              'class 7','class 8','class 9',
              'class 10','class 11','class 12',
              'class 13','class 14','class 15',
-             'class 16','irregular']'''
-    sorted_classes = ['class 9','class 10',
-                    'class 11','class 12',
-                    'class 13','class 14',
-                    'class 15','class 16',
-                    'irregular']
+             'class 16','irregular']
 
     start_time = time.time()
     for srt_clss in sorted_classes:

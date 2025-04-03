@@ -12,7 +12,7 @@ if  __name__ == '__main__':
 
     txt_file_path           = "nonnative\\txts"
     ext                     = ('.txt')
-    TOTAL_txt_file_path     = r'..\texts_txt\nonnative\NN_TOTAL_CORPUS.txt'
+    TOTAL_txt_file_path     = r'..\\texts_txt\\nonnative\\NN_TOTAL_CORPUS.txt'
     TEXT_result             = '' #this starts off the chain
 
     debug_counter   = 0

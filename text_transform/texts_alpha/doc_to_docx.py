@@ -4,7 +4,7 @@ import win32com.client as win32
 from win32com.client import constants
 
 # Directory containing .doc files
-directory = r'C:\Users\Angel\Dropbox\My PC (UNC-PF2A4YMK)\Documents\Capstone\frequency_list\text_transform\texts_alpha\class\docs'
+directory = r'..\\texts_alpha\\class\\docs'
 
 def save_as_docx(file):
     try:

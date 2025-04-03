@@ -2,6 +2,11 @@ import csv
 import ast
 import time
 
+"""
+Using the scraped verbs, create Anki dictionaries for
+"""
+
+
 def read_scraped_verbs(file_path):
     with open(file_path, 'r', encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile)
@@ -30,7 +35,7 @@ if __name__ == '__main__':
     
     for s_class in Scraped_verbs:
         start_time = time.time()
-        scraped_verbs = read_scraped_verbs(f'..\\Scraped_verbs_{s_class}.csv')
+        scraped_verbs = read_scraped_verbs(f'..frequency_list\\Scraped_verbs_{s_class}.csv')
 
         words           = []
         definitions     = []

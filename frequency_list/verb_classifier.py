@@ -1,4 +1,8 @@
 import csv
+'''
+Sort all the verbs in the frequency list, according to its classification
+'''
+
 
 def read_freq_verbs(file_path):
     with open(file_path, 'r', encoding='utf-8') as csvfile:
@@ -11,10 +15,9 @@ def read_class(file_path):
         return [row for row in reader]
     
 
-
-
 if __name__ == '__main__':
     
+    # Listed out for quick manipulation
     verb_cats = ['class 1','class 2','class 3',
              'class 4','class 5','class 6',
              'class 7','class 8','class 9',
@@ -22,7 +25,7 @@ if __name__ == '__main__':
              'class 13','class 14','class 15',
              'class 16','irregular']
             
-    #verb_cats = ['class 10']
+    #verb_cats = ['class 10'] #test with one class, to see if you're seeing what's expected
     Verbs  = read_freq_verbs('verbs_Freqlist_utf.csv')
     total_verbs = 0
     
@@ -31,10 +34,9 @@ if __name__ == '__main__':
         sorted_verbs = []
         print(cat)
         category     = read_class(f'Russian {cat} verbs_members.csv')
-        #Russian class 10 verbs_members.csv
-        #print(category)
+
         for verb in category:
-            #print(verb[0])
+            #print(verb[0]) #sanity check
             if verb[0] in Verbs:
                 sorted_verbs.append(verb)
         

@@ -3,11 +3,17 @@ import unicodedata
 import requests
 from bs4 import BeautifulSoup
 import time
+'''
+Scrape Wiktionary articles using IDs obtained from wiki_cats_IDs.py
+Handles current Wiktionary article structure.
+'''
+
 
 def read_sorted_verbs(file_path):
     '''
-    Reads sorted verbs. Takes in a csv file with
-    verbs and frequency. This is the base for targeted verbs
+    Reads sorted verbs. 
+    Takes in a csv file with verbs and frequency. 
+    This is the base for targeted verbs
     '''
     with open(file_path, 'r', encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile)
@@ -59,6 +65,8 @@ def get_verb(doc):
     # Extract aspects 
     aspect_A = None
     aspect_B = None
+    # Vice-versa either aspect may or may not exist. 
+    # Helps handle issues that may arise with inconsistency
     if gender_span:
         # Check for the next sibling after gender_span
         if gender_span.find_next_sibling() is not None:
@@ -75,7 +83,8 @@ def get_verb(doc):
             aspect_A = None
             aspect_B = None
 
-    #Keep an eye on this. It seems like it'll correctly do: [word, aspect, opposite aspect type, opposite word]        
+    # Keep an eye on this. It'll correctly do: [word, aspect, opposite aspect type, opposite word]
+    # This depends on whether Wiktionary is modified. This becomes a problem on .en vs .ru versions of the site     
     VERB = [headword_text,gender_text,aspect_A,aspect_B,ol_text] 
 
     Present_target_conjugations = [ "Cyrl form-of lang-ru 1|s|pres|ind-form-of origin-",
@@ -127,9 +136,12 @@ def sanitize(word):
     '''
     This functions sanitizes any issues with how the html encodes
     the targeted words. It also handles ambiguous cases that break
-    the code, e.g. english characters disguised as cyrillic
+    the code, e.g. english characters disguised as cyrillic.
+    This is important, due to inconsistencies with how articles
+    are written on Wiktionary. Contact me for any questions. 
     '''
     # Preserve diacritic marks for vowels and exclude Ё ё from removal
+    # Ё ё vs Е е with as an umlaut
     preserved_chars = {'́', '̀', '̂', '̌', '̆', '̑', '̄', 
                        '̈', '̇', '̧', '̣', '̃', '̊', '̍', 
                        '̎', '̓', '̈', '̉', '̛', '̣', 'Ё', 'ё'}
@@ -139,7 +151,7 @@ def sanitize(word):
     has_stress = any(char in normalized_word for char in preserved_chars)
     if not has_stress:
         # Mapping between vowels and their accented versions
-        #Á á Ó ó É é У́ ý И́ и́ Ы́ ы́ Э́ э́ Ю́ ю́ Я́ я́
+        #Á á Ó ó É é У́ ý И́ и́ Ы́ ы́ Э́ э́ Ю́ ю́ Я́ я́ # For reference
         vowel_mapping = {'а': 'á','я': 'я́','э': 'э́','е': 'é',
                          'и': 'и́','ы': 'ы́','о': 'ó','у': 'ý',
                          'ю': 'ю́', 'а': 'а́', 'о':'о́', 'и́':'и́',
@@ -149,7 +161,9 @@ def sanitize(word):
 
     caret_stat = any('̆' in char for char in normalized_word)
     if caret_stat:
-        #print(f'problem word {caret_stat}')
+        # Actually different characters, й vs и with a carat
+        # Rare problem but annoying enough to address
+        #print(f'problem word {caret_stat}') # Debug problem words
         normalized_word = normalized_word.replace('й', 'й')
             
     
@@ -162,13 +176,10 @@ def get_progress(current, total):
     return f'{int(current / total * 100)}%'
 
 if __name__ == '__main__':
-    '''
-    - Target classes
-    - saves dictionary for anki card generator
-    '''
+
+    # Listed out for quick manipulation
     sorted_classes = ['class 9','class 10',
                     'class 11','class 12',
-                    'class 13','class 14',
                     'class 15','class 16',
                     'irregular']
 

@@ -1,7 +1,13 @@
 import pandas as pd
 import genanki
 
-df      = pd.read_csv('Anki_Dict_class 10.csv')
+'''
+This script takes Anki Dictionaries and turns them into Anki Decks.
+For each new Anki Deck, you MUST change the df below, AND hardcode a new
+Deck ID. Otherwise, Anki will overwrite your decks, once imported. 
+'''
+
+df      = pd.read_csv('Anki_Dict_class 10.csv') # Other example decks included
 
 ###style
 
@@ -129,14 +135,16 @@ my_model = genanki.Model(
 
 Deck_ID = 1104592 #hard code this
 '''
+For the sake of reproducibility:
 run in terminal
-python
-import random
-print(random.randrange(1 << 30, 1 << 31)) 
+>>python
+>>import random
+>>print(random.randrange(1 << 30, 1 << 31)) 
+I understand all this can be incorporated to the script, 
+but not everyone is familiar with importing decks.
 '''
+
 symbols_to_remove = ["[", "]", "'", "\\n"]
-
-
 def remove_symbols(text):
     for symbol in symbols_to_remove:
         text = text.replace(symbol, "")
@@ -155,5 +163,7 @@ for _, row in df_cleaned.iterrows():
     my_deck.add_note(card)
 
 
-file_path = 'C:\\Users\\Angel\\Dropbox\\My PC (UNC-PF2A4YMK)\\Documents\\Capstone\\frequency_list\\Anki_code'
+file_path = '..\\frequency_list\\Anki_code'
 genanki.Package(my_deck).write_to_file(f'{file_path}\Anki_{Verb_Category}.apkg')
+
+# example deck included for viewing
